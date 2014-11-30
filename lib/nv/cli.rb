@@ -1,7 +1,7 @@
 require 'thor'
 
 class Nv::CLI < Thor
-  include ::Niconico::Helper
+  include Niconico::Helper
 
   desc "dl URL", "Download video"
   def dl(ptr, output=".")

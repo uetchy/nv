@@ -17,6 +17,8 @@ $ nv config email john@example.com
 $ nv config password pAsSwoRd
 ```
 
+Default config file will be put on __$HOME/.config/nv__
+
 ### Download
 
 ```session
