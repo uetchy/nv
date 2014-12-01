@@ -1,7 +1,6 @@
 require 'ostruct'
 require 'yaml'
 require 'fileutils'
-require 'active_support/core_ext'
 
 class String
   def undent
@@ -25,7 +24,7 @@ module Nv
 
     def save
       File.open(@config_path, 'w') do |f|
-        f.print YAML.dump(self.to_h.stringify_keys)
+        f.print YAML.dump(transform_keys(self.to_h){|k| k.to_s})
       end
     end
 
@@ -42,6 +41,16 @@ module Nv
         EOD
         exit
       end
+    end
+
+    private
+
+    def transform_keys(hs)
+      result = {}
+      hs.each_key do |key|
+        result[yield(key)] = hs[key]
+      end
+      result
     end
   end
 end
