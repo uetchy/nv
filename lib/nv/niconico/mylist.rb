@@ -32,7 +32,7 @@ module Niconico
         description = html_description.gsub(/<\/?.*?>/, '')
 
         items << OpenStruct.new({
-          :title            => item.elements['title/text()'].to_s,
+          :title            => item.elements['title/text()'].to_s.gsub(/(^マイリスト\s|‐ニコニコ動画$)/, ''),
           :link             => item.elements['link/text()'].to_s,
           :guid             => item.elements['guid/text()'].to_s,
           :created_at       => item.elements['pubDate/text()'].to_s,
@@ -42,14 +42,14 @@ module Niconico
       end
 
       @mylist = OpenStruct.new({
-        :title       => channel.elements['title/text()'],
-        :link        => channel.elements['link/text()'],
-        :description => channel.elements['description/text()'],
-        :created_at  => channel.elements['pubDate/text()'],
-        :updated_at  => channel.elements['lastBuildDate/text()'],
-        :generator   => channel.elements['generator/text()'],
-        :author      => channel.elements['dc:creator/text()'],
-        :language    => channel.elements['language/text()'],
+        :title       => channel.elements['title/text()'].to_s,
+        :link        => channel.elements['link/text()'].to_s,
+        :description => channel.elements['description/text()'].to_s,
+        :created_at  => channel.elements['pubDate/text()'].to_s,
+        :updated_at  => channel.elements['lastBuildDate/text()'].to_s,
+        :generator   => channel.elements['generator/text()'].to_s,
+        :author      => channel.elements['dc:creator/text()'].to_s,
+        :language    => channel.elements['language/text()'].to_s,
         :items       => items,
         :items_count => items.size
       })

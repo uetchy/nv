@@ -1,5 +1,6 @@
 require 'mechanize'
 require 'open-uri'
+require 'net/http'
 require 'uri'
 require 'cgi'
 require 'rexml/document'
@@ -16,5 +17,5 @@ require 'niconico/video'
 require 'niconico/mylist'
 
 module Niconico
-
+  OUTPUT_NAME = "%{title} - [%{id}].%{extension}"
 end

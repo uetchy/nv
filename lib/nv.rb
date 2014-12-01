@@ -5,18 +5,6 @@ require "nv/cli"
 
 =begin
 
-nico = Niconico.new.sign_in(...)
-video = nico.video('sm9')
-video.download('./')
-
-mylist = nico.mylist('482029')
-mylist.download()
-
-include Niconico::Helper
-if mylist? 'http://...'
-  ...
-end
-
    ##### Way #####
 
 1. nico = Niconico::Base.new.sign_in(...)
@@ -33,5 +21,5 @@ end
 module Nv
   class LackOfInformation < StandardError; end
 
-  CONFIG_PATH = File.join(ENV['HOME'], '.config', 'nv')
+  CONFIG_PATH = "#{ENV['HOME']}/.config/nv"
 end
