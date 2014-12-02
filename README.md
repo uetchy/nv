@@ -17,7 +17,7 @@ $ nv config email john@example.com
 $ nv config password pAsSwoRd
 ```
 
-Default config file will be put on __$HOME/.config/nv__
+Default config file will be put on __~/.config/nv__
 
 ### Download
 
@@ -26,11 +26,26 @@ $ nv dl http://www.nicovideo.jp/watch/sm22538737
 $ nv dl http://www.nicovideo.jp/mylist/33435425
 ```
 
-Also you can use more easy way.
+You also can use more shorten addresses.
 
 ```session
 $ nv dl sm9
 $ nv dl mylist/33435425
+```
+
+#### Options
+
+##### Directory
+
+```session
+$ nv dl sm9 --with-dir
+$ nv dl mylist/33435425 --without-dir
+```
+
+##### Comments
+
+```session
+$ nv dl sm9 --with-comments
 ```
 
 ### Audit
