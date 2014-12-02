@@ -3,4 +3,9 @@
 
 require 'nv'
 
-Nv::CLI.start(ARGV)
+begin
+  Nv::CLI.start(ARGV)
+rescue SystemExit, Interrupt
+rescue Exception => e
+  puts e
+end
