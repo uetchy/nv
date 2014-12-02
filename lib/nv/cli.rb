@@ -94,4 +94,9 @@ class Nv::CLI < Thor
     puts "=== config(#{Nv::CONFIG_PATH}) ==="
     puts "#{key}=#{config[key]}"
   end
+
+  desc "version", "Show version"
+  def version
+    puts "nv version #{Nv::VERSION}"
+  end
 end
