@@ -4,7 +4,7 @@ class Nv::CLI < Thor
   include Niconico::Helper
 
   desc 'dl URL', 'Download video'
-  # method_option 'with-comments', :aliases => '-c', :desc => 'Download comments'
+  method_option 'with-comments', :aliases => '-c', :desc => 'Download comments'
   method_option 'with-dir', :aliases => '-d', :desc => 'Create directory'
   method_option 'without-dir', :aliases => '-D', :desc => "Don't create directory"
   def dl(ptr, output=".")
@@ -17,10 +17,12 @@ class Nv::CLI < Thor
       mylist = nico.mylist(ptr)
 
       puts "Title : #{mylist.title}"
-      puts "Desc  : #{mylist.description}"
+      puts "Desc  : #{mylist.description}" unless mylist.description.empty?
+
+      escaped_title = escape_string(mylist.title)
+      output = options['without-dir'] ? '.' : escaped_title
 
       mylist.items.each do |item|
-        output = options['without-dir'] ? '.' : escape_string(mylist.title)
         dl(item.link, output)
       end
     else
@@ -29,14 +31,11 @@ class Nv::CLI < Thor
       # Inspect
       puts "Downloading... #{video.title}"
 
-      # Donwload video
-      output = options['with-dir'] ? escape_string(video.title) : '.'
-      video.download output
+      output ||= options['with-dir'] ? escape_string(video.title) : '.'
 
-      # Download comments
-      # if options['with-comments']
-      #   video.download_comments
-      # end
+      # Download
+      video.download output
+      video.download_comments output if options['with-comments']
 
       puts "+ done"
     end

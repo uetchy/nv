@@ -22,7 +22,7 @@ module Niconico
     end
 
     def fetch
-      doc = REXML::Document.new(@agent.get("http://www.nicovideo.jp/mylist/#{@id}?rss=2.0").body)
+      doc = REXML::Document.new(open("http://www.nicovideo.jp/mylist/#{@id}?rss=2.0").read)
 
       channel = doc.elements['/rss/channel']
 
@@ -32,7 +32,7 @@ module Niconico
         description = html_description.gsub(/<\/?.*?>/, '')
 
         items << OpenStruct.new({
-          :title            => item.elements['title/text()'].to_s.gsub(/(^マイリスト\s|‐ニコニコ動画$)/, ''),
+          :title            => item.elements['title/text()'].to_s,
           :link             => item.elements['link/text()'].to_s,
           :guid             => item.elements['guid/text()'].to_s,
           :created_at       => item.elements['pubDate/text()'].to_s,
@@ -42,7 +42,7 @@ module Niconico
       end
 
       @mylist = OpenStruct.new({
-        :title       => channel.elements['title/text()'].to_s,
+        :title       => channel.elements['title/text()'].to_s.gsub(/(^マイリスト\s|‐ニコニコ動画$)/, ''),
         :link        => channel.elements['link/text()'].to_s,
         :description => channel.elements['description/text()'].to_s,
         :created_at  => channel.elements['pubDate/text()'].to_s,
