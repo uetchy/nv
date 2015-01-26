@@ -18,7 +18,7 @@ module Nv
       Dir.mkdir(config_dir) unless Dir.exist?(config_dir)
       FileUtils.touch(@config_path) unless File.exist?(@config_path)
 
-      @config = YAML.load_file(@config_path) || {}
+      @config = YAML.load(open(@config_path).read) || {}
       super(@config)
     end
 
