@@ -70,7 +70,6 @@ func getVideo(videoId string, sessionKey string) error {
 
   // Create output path
   rootPath := viper.GetString("root")
-  fmt.Println(thumb)
   filenameTmpl := "{{.ProviderUrl}}/watch/{{.VideoId}}/{{.Title}}.{{.Extension}}"
   inv := map[string]string {
     "Title": thumb.Title,
@@ -84,7 +83,6 @@ func getVideo(videoId string, sessionKey string) error {
   t.Execute(&buf, inv)
   outputPath := filepath.Join(rootPath, buf.String())
   fmt.Println(outputPath)
-  os.Exit(1)
 
   // Stop if target file already exist
   if _, err := os.Stat(outputPath); err == nil {
