@@ -1,8 +1,11 @@
 ## 0.1.0 (2014-08-18)
+## [Unreleased] - Unreleased
+### Changed
+- Rewrote all of codes in Golang
 
 Initial release
 
-### Added
+
 
 - Add Fundamental features
 
@@ -12,7 +15,7 @@ Initial release
 
 ### Removed
 
-- Nothing
+
 
 ### Fixed
 

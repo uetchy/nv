@@ -5,7 +5,7 @@ The commandline tool for downloading videos and mylist at nicovideo.
 ## Installation
 
 ```session
-$ go get github.com/uetchy/nv
+$ go get -d github.com/uetchy/nv
 ```
 
 ## Usage
@@ -17,20 +17,20 @@ $ nv config email john@example.com
 $ nv config password pAsSwoRd
 ```
 
-Default config file will be put on __~/.config/nv__
+Default config file will be put on __~/.config/nv/config.yml__
 
 ### Download
 
 ```session
-$ nv dl http://www.nicovideo.jp/watch/sm22538737
-$ nv dl http://www.nicovideo.jp/mylist/33435425
+$ nv get http://www.nicovideo.jp/watch/sm22538737
+$ nv get http://www.nicovideo.jp/mylist/33435425
 ```
 
 You also can use more shorten addresses.
 
 ```session
-$ nv dl sm9
-$ nv dl mylist/33435425
+$ nv get sm9
+$ nv get mylist/33435425
 ```
 
 #### Options
@@ -38,14 +38,14 @@ $ nv dl mylist/33435425
 ##### Directory
 
 ```session
-$ nv dl sm9 --with-dir
-$ nv dl mylist/33435425 --without-dir
+$ nv get sm9 --with-dir
+$ nv get mylist/33435425 --without-dir
 ```
 
 ##### Comments
 
 ```session
-$ nv dl sm9 --with-comments
+$ nv get sm9 --with-comments
 ```
 
 ### Audit
