@@ -14,6 +14,7 @@ import (
   "encoding/xml"
 
   "github.com/cheggaaa/pb"
+  "github.com/gosuri/uiprogress"
 )
 
 type Thumbinfo struct {
@@ -129,9 +130,7 @@ func downloadVideoSource(videoUrl string, outputPath string, nicoHistory string)
 
   client := &http.Client{}
   res, _ := client.Do(req)
-
   defer res.Body.Close()
-
   dataLength, _ := strconv.Atoi(res.Header.Get("Content-Length"))
 
   bar := pb.New(dataLength).SetUnits(pb.U_BYTES)
