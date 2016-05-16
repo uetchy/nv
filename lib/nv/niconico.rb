@@ -15,5 +15,5 @@ require 'nv/niconico/video'
 require 'nv/niconico/mylist'
 
 module Niconico
-  OUTPUT_NAME = "%{title} - [%{id}].%{extension}"
+  OUTPUT_NAME = '%{title} - [%{id}].%{extension}'.freeze
 end

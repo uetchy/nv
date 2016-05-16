@@ -24,12 +24,12 @@ module Nv
 
     def save
       File.open(@config_path, 'w') do |f|
-        f.print YAML.dump(transform_keys(self.to_h){|k| k.to_s})
+        f.print YAML.dump(transform_keys(to_h, &:to_s))
       end
     end
 
     def verify_for_authentication
-      self.email && self.password
+      email && password
     end
 
     def verify_for_authentication!(cmd)

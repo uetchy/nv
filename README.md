@@ -1,4 +1,5 @@
 # nv
+
 The commandline tool for downloading videos and mylist at nicovideo.
 
 ## Installation
@@ -8,6 +9,7 @@ $ go get -d github.com/uetchy/nv
 ```
 
 ## Usage
+
 ### Setup
 
 ```session
@@ -15,7 +17,8 @@ $ nv config email john@example.com
 $ nv config password pAsSwoRd
 ```
 
-# Default config file will be put on __~/.config/nv/config.yml__
+# Default config file will be put on **~/.config/nv/config.yml**
+
 ## Download
 
 ```session
@@ -31,6 +34,7 @@ $ nv get mylist/33435425
 ```
 
 ### Options
+
 #### Directory
 
 ```session
@@ -52,7 +56,8 @@ $ nv info mylist/33435425
 ```
 
 ## Contribution
-1. Fork ([https://github.com/uetchy/nv/fork](https://github.com/uetchy/nv/fork))
+
+1. Fork (<https://github.com/uetchy/nv/fork>)
 2. Create a feature branch
 3. Commit your changes
 4. Rebase your local changes against the master branch
