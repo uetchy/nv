@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/xml"
 	"fmt"
+	"github.com/cheggaaa/pb"
+	"github.com/gosuri/uiprogress"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -12,9 +14,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
-	"github.com/cheggaaa/pb"
-	"github.com/gosuri/uiprogress"
 )
 
 type Thumbinfo struct {

@@ -1,22 +1,12 @@
-## 0.1.0 (2014-08-18)
-## [Unreleased] - Unreleased
+# ChangeLog
+
+## Unreleased
+
 ### Changed
+
 - Rewrote all of codes in Golang
 
-Initial release
+## 0.1.0 (2014-08-18)
 
-
-
+- Initial release
 - Add Fundamental features
-
-### Deprecated
-
-- Nothing
-
-### Removed
-
-
-
-### Fixed
-
-- Nothing
