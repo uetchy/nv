@@ -1,4 +1,4 @@
-package main
+package niconico
 
 import (
 	"encoding/json"
@@ -14,7 +14,7 @@ type MylistVideoThumbnailStyle struct {
 }
 
 type MylistVideo struct {
-	ThumbnailUrl      string
+	ThumbnailURL      string
 	Length            string
 	LengthSeconds     int
 	Title             string
@@ -26,7 +26,7 @@ type MylistVideo struct {
 	LastResBody       string
 	ThumbnailStyle    MylistVideoThumbnailStyle
 	IsMiddleThumbnail bool
-	Id                string
+	ID                string
 	CreateTime        int
 	ThreadUpdateTime  string
 	MylistComment     string
@@ -35,7 +35,7 @@ type MylistVideo struct {
 type Mylist struct {
 	Name                 string
 	Description          string
-	UserId               int
+	UserID               int
 	UserNickname         string
 	DefaultSort          int
 	List                 []MylistVideo
@@ -44,23 +44,23 @@ type Mylist struct {
 	Status               string
 }
 
-func isMylist(query string) bool {
+func IsMylist(query string) bool {
 	if m, _ := regexp.MatchString("mylist", query); !m {
 		return false
 	}
 	return true
 }
 
-func toMylistId(query string) string {
+func ToMylistID(query string) string {
 	re, _ := regexp.Compile("\\d+")
 	one := re.Find([]byte(query))
 
 	return string(one)
 }
 
-func getMylist(mylistId string, sessionKey string) (Mylist, error) {
+func GetMylist(mylistID string, sessionKey string) (Mylist, error) {
 	target := "http://riapi.nicovideo.jp/api/watch/mylistvideo?id="
-	target += mylistId
+	target += mylistID
 	req, _ := http.NewRequest("GET", target, nil)
 	req.Header.Add("Cookie", sessionKey)
 	client := &http.Client{}

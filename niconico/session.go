@@ -1,4 +1,4 @@
-package main
+package niconico
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func getSessionKey(mail string, password string) string {
+func GetSessionKey(mail string, password string) string {
 	jar, _ := cookiejar.New(nil)
 	client := &http.Client{
 		Jar: jar,

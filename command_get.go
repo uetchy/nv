@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/codegangsta/cli"
 	"github.com/spf13/viper"
+	"github.com/uetchy/nv/niconico"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -44,16 +45,16 @@ var CommandGet = cli.Command{
 			os.Exit(1)
 		}
 
-		sessionKey := getSessionKey(email, password)
-		if isMylist(argQuery) {
-			mylistId := toMylistId(argQuery)
-			mylist, _ := getMylist(mylistId, sessionKey)
+		sessionKey := niconico.GetSessionKey(email, password)
+		if niconico.IsMylist(argQuery) {
+			mylistID := niconico.ToMylistID(argQuery)
+			mylist, _ := niconico.GetMylist(mylistID, sessionKey)
 			for _, video := range mylist.List {
-				getVideo(video.Id, sessionKey)
+				getVideo(video.ID, sessionKey)
 			}
 		} else {
-			videoId := toVideoId(argQuery)
-			getVideo(videoId, sessionKey)
+			videoID := niconico.ToVideoID(argQuery)
+			getVideo(videoID, sessionKey)
 		}
 	},
 }
@@ -65,17 +66,17 @@ func loadConfig() error {
 	return err
 }
 
-func getVideo(videoId string, sessionKey string) error {
-	thumb, _ := getThumbInfo(videoId)
+func getVideo(videoID string, sessionKey string) error {
+	thumb, _ := niconico.GetThumbInfo(videoID)
 
 	// Create output path
 	rootPath := viper.GetString("root")
-	filenameTmpl := "{{.ProviderUrl}}/watch/{{.VideoId}}/{{.Title}}.{{.Extension}}"
+	filenameTmpl := "{{.ProviderURL}}/watch/{{.VideoID}}/{{.Title}}.{{.Extension}}"
 	inv := map[string]string{
 		"Title":       thumb.Title,
-		"VideoId":     thumb.VideoId,
+		"VideoID":     thumb.VideoID,
 		"Extension":   thumb.MovieType,
-		"ProviderUrl": "www.nicovideo.jp",
+		"ProviderURL": "www.nicovideo.jp",
 	}
 	t := template.New("outputPath")
 	template.Must(t.Parse(filenameTmpl))
@@ -91,11 +92,11 @@ func getVideo(videoId string, sessionKey string) error {
 	}
 
 	// Fetch meta data
-	flv, _ := getFlv(videoId, sessionKey)
-	nicoHistory, _ := getNicoHistory(videoId, sessionKey)
+	flv, _ := niconico.GetFlv(videoID, sessionKey)
+	nicoHistory, _ := niconico.GetHistory(videoID, sessionKey)
 
 	// Download video
-	if err := downloadVideoSource(flv["url"], outputPath, nicoHistory); err != nil {
+	if err := niconico.DownloadVideoSource(flv["url"], outputPath, nicoHistory); err != nil {
 		fmt.Println("Failed: " + thumb.Title)
 		return errors.New("Failed download")
 	}
