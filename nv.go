@@ -1,12 +1,12 @@
 package main
 
 import (
-	"os"
 	"github.com/codegangsta/cli"
+	"os"
 )
 
 var Commands = []cli.Command{
-  CommandGet,
+	CommandGet,
 }
 
 func main() {

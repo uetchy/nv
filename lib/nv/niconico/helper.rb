@@ -6,7 +6,7 @@ module Niconico
     end
 
     def escape_string(str)
-      str.gsub(/[\/\\?*:|><]/) {|m| [m.ord + 65248].pack('U*')}
+      str.gsub(/[\/\\?*:|><]/) { |m| [m.ord + 65_248].pack('U*') }
     end
   end
 end

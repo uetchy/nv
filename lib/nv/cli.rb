@@ -4,10 +4,10 @@ class Nv::CLI < Thor
   include Niconico::Helper
 
   desc 'dl URL', 'Download video'
-  method_option 'with-comments', :aliases => '-c', :desc => 'Download comments'
-  method_option 'with-dir', :aliases => '-d', :desc => 'Create directory'
-  method_option 'without-dir', :aliases => '-D', :desc => "Don't create directory"
-  def dl(ptr, output=".")
+  method_option 'with-comments', aliases: '-c', desc: 'Download comments'
+  method_option 'with-dir', aliases: '-d', desc: 'Create directory'
+  method_option 'without-dir', aliases: '-D', desc: "Don't create directory"
+  def dl(ptr, output = '.')
     config = Nv::Config.new(Nv::CONFIG_PATH)
     config.verify_for_authentication!('dl')
 
@@ -37,7 +37,7 @@ class Nv::CLI < Thor
       video.download output
       video.download_comments output if options['with-comments']
 
-      puts "+ done"
+      puts '+ done'
     end
   end
 
@@ -55,7 +55,7 @@ class Nv::CLI < Thor
       puts "Desc  : #{mylist.description}"
 
       mylist.items.each_with_index do |item, i|
-        puts "   #{i+1}. #{item.title}"
+        puts "   #{i + 1}. #{item.title}"
       end
     else
       video = nico.video(ptr)
@@ -75,7 +75,7 @@ class Nv::CLI < Thor
   end
 
   desc 'config KEY VALUE', 'Set config'
-  def config(key=nil, value=nil)
+  def config(key = nil, value = nil)
     config = Nv::Config.new(Nv::CONFIG_PATH)
 
     unless key
@@ -95,7 +95,7 @@ class Nv::CLI < Thor
     puts "#{key}=#{config[key]}"
   end
 
-  desc "version", "Show version"
+  desc 'version', 'Show version'
   def version
     puts "nv version #{Nv::VERSION}"
   end
