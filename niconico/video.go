@@ -1,10 +1,9 @@
-package main
+package niconico
 
 import (
 	"encoding/xml"
 	"fmt"
 	"github.com/cheggaaa/pb"
-	"github.com/gosuri/uiprogress"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -17,10 +16,10 @@ import (
 )
 
 type Thumbinfo struct {
-	VideoId       string `xml:"thumb>video_id"`
+	VideoID       string `xml:"thumb>video_id"`
 	Title         string `xml:"thumb>title"`
 	Description   string `xml:"thumb>description"`
-	ThumbnailUrl  string `xml:"thumb>thumbnail_url"`
+	ThumbnailURL  string `xml:"thumb>thumbnail_url"`
 	FirstRetrieve string `xml:"thumb>first_retrieve"`
 	Length        string `xml:"thumb>length"`
 	MovieType     string `xml:"thumb>movie_type"`
@@ -30,14 +29,14 @@ type Thumbinfo struct {
 	CommentNum    int    `xml:"thumb>comment_num"`
 	MylistCounter int    `xml:"thumb>mylist_counter"`
 	LastResBody   string `xml:"thumb>last_res_body"`
-	WatchUrl      string `xml:"thumb>watch_url"`
+	WatchURL      string `xml:"thumb>watch_url"`
 	ThumbType     string `xml:"thumb>thumb_type"`
 	Embeddable    string `xml:"thumb>embeddable"`
 	NoLivePlay    int    `xml:"thumb>no_live_play"`
 	Tags          []Tag  `xml:"thumb>tags>tag"`
-	UserId        int    `xml:"thumb>user_id"`
+	UserID        int    `xml:"thumb>user_id"`
 	UserNickname  string `xml:"thumb>user_nickname"`
-	UserIconUrl   string `xml:"thumb>user_icon_url"`
+	UserIconURL   string `xml:"thumb>user_icon_url"`
 }
 
 type Tag struct {
@@ -45,15 +44,15 @@ type Tag struct {
 	Category string `xml:"category,attr"`
 }
 
-func toVideoId(query string) string {
+func ToVideoID(query string) string {
 	re, _ := regexp.Compile("[a-z]{2}?\\d+")
 	one := re.Find([]byte(query))
 
 	return string(one)
 }
 
-func getThumbInfo(videoId string) (thumb Thumbinfo, err error) {
-	target := "http://ext.nicovideo.jp/api/getthumbinfo/" + videoId
+func GetThumbInfo(videoID string) (thumb Thumbinfo, err error) {
+	target := "http://ext.nicovideo.jp/api/getthumbinfo/" + videoID
 	res, err := http.Get(target)
 	if err != nil {
 		return thumb, err
@@ -71,8 +70,8 @@ func getThumbInfo(videoId string) (thumb Thumbinfo, err error) {
 	return thumb, nil
 }
 
-func getNicoHistory(videoId string, sessionKey string) (nicoHistory string, err error) {
-	target := "http://www.nicovideo.jp/watch/" + videoId
+func GetHistory(videoID string, sessionKey string) (nicoHistory string, err error) {
+	target := "http://www.nicovideo.jp/watch/" + videoID
 	req, _ := http.NewRequest("GET", target, nil)
 	req.Header.Add("Cookie", sessionKey)
 	jar, _ := cookiejar.New(nil)
@@ -90,8 +89,8 @@ func getNicoHistory(videoId string, sessionKey string) (nicoHistory string, err 
 	return tmp[1].String(), nil
 }
 
-func getFlv(videoId string, sessionKey string) (flv map[string]string, err error) {
-	target := "http://flapi.nicovideo.jp/api/getflv?v=" + videoId
+func GetFlv(videoID string, sessionKey string) (flv map[string]string, err error) {
+	target := "http://flapi.nicovideo.jp/api/getflv?v=" + videoID
 	req, _ := http.NewRequest("GET", target, nil)
 	req.Header.Add("Cookie", sessionKey)
 
@@ -116,8 +115,8 @@ func getFlv(videoId string, sessionKey string) (flv map[string]string, err error
 	return flv, nil
 }
 
-func downloadVideoSource(videoUrl string, outputPath string, nicoHistory string) (err error) {
-	req, _ := http.NewRequest("GET", videoUrl, nil)
+func DownloadVideoSource(videoURL string, outputPath string, nicoHistory string) (err error) {
+	req, _ := http.NewRequest("GET", videoURL, nil)
 	req.Header.Add("Cookie", nicoHistory)
 
 	temporaryPath := outputPath + ".nvdownload"

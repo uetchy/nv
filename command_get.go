@@ -1,22 +1,19 @@
 package main
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"github.com/codegangsta/cli"
 	"github.com/spf13/viper"
 	"github.com/uetchy/nv/niconico"
 	"os"
-	"path/filepath"
-	"text/template"
 )
 
 var CommandGet = cli.Command{
 	Name:        "get",
 	Usage:       "",
 	Description: "",
-	Action: func(context *cli.Context) {
+	Action: func(context *cli.Context) error {
 		argQuery := context.Args().Get(0)
 
 		if argQuery == "" {
@@ -26,22 +23,20 @@ var CommandGet = cli.Command{
 
 		err := loadConfig()
 		if err != nil {
-			panic(fmt.Errorf("Fatal error config file: %s \n", err))
+			err = generateConfig()
+			if err != nil {
+				panic(fmt.Errorf("%s", err))
+			}
 		}
 
 		email := viper.GetString("email")
 		password := viper.GetString("password")
-		root := viper.GetString("root")
 		if email == "" {
 			fmt.Println("Must setup 'email' first")
 			os.Exit(1)
 		}
 		if password == "" {
 			fmt.Println("Must setup 'password' first")
-			os.Exit(1)
-		}
-		if root == "" {
-			fmt.Println("Must setup 'root' first")
 			os.Exit(1)
 		}
 
@@ -56,33 +51,21 @@ var CommandGet = cli.Command{
 			videoID := niconico.ToVideoID(argQuery)
 			getVideo(videoID, sessionKey)
 		}
+
+		return nil
 	},
 }
 
-func loadConfig() error {
-	viper.SetConfigName("config")
-	viper.AddConfigPath("$HOME/.config/nv")
-	err := viper.ReadInConfig()
-	return err
-}
-
 func getVideo(videoID string, sessionKey string) error {
-	thumb, _ := niconico.GetThumbInfo(videoID)
-
 	// Create output path
-	rootPath := viper.GetString("root")
-	filenameTmpl := "{{.ProviderURL}}/watch/{{.VideoID}}/{{.Title}}.{{.Extension}}"
+	thumb, _ := niconico.GetThumbInfo(videoID)
 	inv := map[string]string{
-		"Title":       thumb.Title,
-		"VideoID":     thumb.VideoID,
-		"Extension":   thumb.MovieType,
-		"ProviderURL": "www.nicovideo.jp",
+		"Title":     thumb.Title,
+		"VideoID":   thumb.VideoID,
+		"Extension": thumb.MovieType,
 	}
-	t := template.New("outputPath")
-	template.Must(t.Parse(filenameTmpl))
-	var buf bytes.Buffer
-	t.Execute(&buf, inv)
-	outputPath := filepath.Join(rootPath, buf.String())
+	filenameTmpl := "[{{.VideoID}}] {{.Title}}.{{.Extension}}"
+	outputPath := applyTemplate(filenameTmpl, inv)
 	fmt.Println(outputPath)
 
 	// Stop if target file already exist
@@ -98,7 +81,7 @@ func getVideo(videoID string, sessionKey string) error {
 	// Download video
 	if err := niconico.DownloadVideoSource(flv["url"], outputPath, nicoHistory); err != nil {
 		fmt.Println("Failed: " + thumb.Title)
-		return errors.New("Failed download")
+		return err
 	}
 
 	fmt.Println("Downloaded: " + thumb.Title)
