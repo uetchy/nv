@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/uetchy/nv/niconico"
 	"os"
+	"strconv"
 )
 
 var CommandGet = cli.Command{
@@ -64,12 +65,13 @@ func getVideo(videoID string, sessionKey string) error {
 		"VideoID":   thumb.VideoID,
 		"Extension": thumb.MovieType,
 	}
-	filenameTmpl := "[{{.VideoID}}] {{.Title}}.{{.Extension}}"
-	outputPath := applyTemplate(filenameTmpl, inv)
-	fmt.Println(outputPath)
+	videoFilenameTmpl := "{{.Title}} [{{.VideoID}}].{{.Extension}}"
+	videoDestPath := applyTemplate(videoFilenameTmpl, inv)
+	commentsDestPath := videoDestPath + ".json"
+	fmt.Println(videoDestPath)
 
 	// Stop if target file already exist
-	if _, err := os.Stat(outputPath); err == nil {
+	if _, err := os.Stat(videoDestPath); err == nil {
 		fmt.Println("Already donwloaded: " + thumb.Title)
 		return errors.New("Already donwloaded")
 	}
@@ -79,8 +81,17 @@ func getVideo(videoID string, sessionKey string) error {
 	nicoHistory, _ := niconico.GetHistory(videoID, sessionKey)
 
 	// Download video
-	if err := niconico.DownloadVideoSource(flv["url"], outputPath, nicoHistory); err != nil {
+	if err := niconico.DownloadVideoSource(flv["url"], videoDestPath, nicoHistory); err != nil {
 		fmt.Println("Failed: " + thumb.Title)
+		return err
+	}
+
+	// Download video comments
+	commentURL := flv["ms"]
+	commentLength, _ := strconv.Atoi(flv["l"])
+	commentThreadID := flv["thread_id"]
+	if err := niconico.DownloadVideoComments(commentURL, commentsDestPath, nicoHistory, commentThreadID, commentLength); err != nil {
+		fmt.Println("Failed to fetch comments:", commentURL)
 		return err
 	}
 
