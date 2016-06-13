@@ -17,9 +17,10 @@ var CommandInfo = cli.Command{
 			os.Exit(1)
 		}
 
-    return nil
-  },
+		return nil
+	},
 }
+
 // def info(ptr)
 //   config = Nv::Config.new(Nv::CONFIG_PATH)
 //   config.verify_for_authentication!('info')

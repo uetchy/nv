@@ -17,9 +17,10 @@ var CommandBrowse = cli.Command{
 			os.Exit(1)
 		}
 
-    return nil
-  },
+		return nil
+	},
 }
+
 // def browse(filepath)
 //   video_id = File.basename(filepath).match(/[^\w]([\w]{2}\d+)[^\w]/)[1]
 //   system "open http://www.nicovideo.jp/watch/#{video_id}"
