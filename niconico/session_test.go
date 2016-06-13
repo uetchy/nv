@@ -1,9 +1,9 @@
 package niconico
 
 import (
-  "testing"
-  "os"
-  "strings"
+	"os"
+	"strings"
+	"testing"
 )
 
 func TestGetSessionKey(t *testing.T) {
