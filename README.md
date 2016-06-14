@@ -1,5 +1,7 @@
 # nv
 
+[![Build Status](https://travis-ci.org/uetchy/nv.svg?branch=master)](https://travis-ci.org/uetchy/nv)
+
 The commandline tool for downloading videos and mylist at nicovideo.
 
 ## Installation
