@@ -6,6 +6,8 @@ import (
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 )
 
 type config struct {
@@ -32,7 +34,7 @@ func saveConfig(destPath string) error {
 		return err
 	}
 
-	err = ioutil.WriteFile(destPath, blob, 0644)
+	err = ioutil.WriteFile(destPath, blob, 0600)
 	if err != nil {
 		return err
 	}
@@ -40,12 +42,21 @@ func saveConfig(destPath string) error {
 	return nil
 }
 
-func generateConfig() error {
+func generateConfig() (err error) {
 	email := prompter.Prompt("Email", "")
 	viper.Set("Email", email)
 	password := prompter.Prompt("Password", "")
 	viper.Set("Password", password)
+
 	defaultConfigPath, _ := homedir.Expand("~/.config/nv/config.json")
-	saveConfig(defaultConfigPath)
+	err = os.MkdirAll(filepath.Dir(defaultConfigPath), 0755)
+	if err != nil {
+		return err
+	}
+
+	err = saveConfig(defaultConfigPath)
+	if err != nil {
+		return err
+	}
 	return nil
 }

@@ -45,7 +45,7 @@ type Mylist struct {
 }
 
 func IsMylist(query string) bool {
-	if m, _ := regexp.MatchString("mylist", query); !m {
+	if m, _ := regexp.MatchString("mylist/", query); !m {
 		return false
 	}
 	return true
