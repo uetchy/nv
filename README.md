@@ -12,14 +12,7 @@ $ go get -d github.com/uetchy/nv
 
 ## Usage
 
-### Setup
-
-```session
-$ nv config email john@example.com
-$ nv config password pAsSwoRd
-```
-
-# Default config file will be put on **~/.config/nv/config.yml**
+Default config file will be put on **~/.config/nv/config.yml**
 
 ## Download
 
@@ -37,24 +30,23 @@ $ nv get mylist/33435425
 
 ### Options
 
-#### Directory
-
-```session
-$ nv get sm9 --with-dir
-$ nv get mylist/33435425 --without-dir
-```
-
-#### Comments
+#### Download comments
 
 ```session
 $ nv get sm9 --with-comments
 ```
 
-## Audit
+## Show info
 
 ```session
 $ nv info sm9
 $ nv info mylist/33435425
+```
+
+## Open video on nicovideo.jp
+
+```session
+$ nv browse "./Cat Movie [sm00000].mp4"
 ```
 
 ## Contribution
