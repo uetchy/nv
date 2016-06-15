@@ -31,7 +31,7 @@ var CommandGet = cli.Command{
 		if err != nil {
 			err = generateConfig()
 			if err != nil {
-				panic(fmt.Errorf("%s", err))
+				return cli.NewExitError(err.Error(), 1)
 			}
 		}
 
@@ -41,10 +41,14 @@ var CommandGet = cli.Command{
 			return cli.NewExitError("Must setup 'email' first", 1)
 		}
 		if password == "" {
-			return cli.NewExitError("Must setup 'password' first")
+			return cli.NewExitError("Must setup 'password' first", 1)
 		}
 
-		sessionKey := niconico.GetSessionKey(email, password)
+		err, sessionKey := niconico.GetSessionKey(email, password)
+		if err != nil {
+			return cli.NewExitError("Failed to retrieve session key", 1)
+		}
+
 		if niconico.IsMylist(argQuery) {
 			mylistID := niconico.ToMylistID(argQuery)
 			mylist, _ := niconico.GetMylist(mylistID, sessionKey)
