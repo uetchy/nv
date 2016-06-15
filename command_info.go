@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/codegangsta/cli"
+	"fmt"
+	"github.com/urfave/cli"
 	"os"
 )
 
@@ -11,11 +12,21 @@ var CommandInfo = cli.Command{
 	Description: "",
 	Action: func(context *cli.Context) error {
 		argQuery := context.Args().Get(0)
-
 		if argQuery == "" {
-			cli.ShowCommandHelp(context, "info")
-			os.Exit(1)
+			return cli.NewExitError("No argument specified", 1)
 		}
+
+		if niconico.IsMylist(argQuery) {
+			mylistID := niconico.ToMylistID(argQuery)
+			mylist, _ := niconico.GetMylist(mylistID, sessionKey)
+			for _, video := range mylist.List {
+				getVideo(video.ID, sessionKey, withComments)
+			}
+		} else {
+			videoID := niconico.ToVideoID(argQuery)
+			getVideo(videoID, sessionKey, withComments)
+		}
+		fmt.Println(videoID)
 
 		return nil
 	},
