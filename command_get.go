@@ -57,7 +57,10 @@ var CommandGet = cli.Command{
 			}
 		} else {
 			videoID := niconico.ToVideoID(argQuery)
-			getVideo(videoID, sessionKey, withComments)
+			err := getVideo(videoID, sessionKey, withComments)
+			if err != nil {
+				return cli.NewExitError(err.Error(), 1)
+			}
 		}
 
 		return nil
@@ -79,8 +82,7 @@ func getVideo(videoID string, sessionKey string, withComments bool) error {
 
 	// Stop if target file already exist
 	if _, err := os.Stat(videoDestPath); err == nil {
-		fmt.Println("Already donwloaded: " + thumb.Title)
-		return errors.New("Already donwloaded")
+		return errors.New("Already donwloaded" + thumb.Title)
 	}
 
 	// Fetch meta data
@@ -99,11 +101,9 @@ func getVideo(videoID string, sessionKey string, withComments bool) error {
 		commentLength, _ := strconv.Atoi(flv["l"])
 		commentThreadID := flv["thread_id"]
 		if err := niconico.DownloadVideoComments(commentURL, commentsDestPath, nicoHistory, commentThreadID, commentLength); err != nil {
-			fmt.Println("Failed to fetch comments:", commentURL)
 			return err
 		}
 	}
 
-	fmt.Println("Downloaded: " + thumb.Title)
 	return nil
 }

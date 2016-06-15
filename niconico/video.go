@@ -79,22 +79,22 @@ type Leaf struct {
 
 // <view_counter video="32767" id="sm22495319" mylist="55"/>
 type ViewCounter struct {
-	Video  string `xml:"video,attr" json:"video"`
+	Video  int    `xml:"video,attr" json:"video"`
 	ID     string `xml:"id,attr" json:"id"`
 	Mylist int    `xml:"mylist,attr" json:"mylist"`
 }
 
 // <global_num_res thread="1387572949" num_res="256"/>
-type GlobalNumberRes struct {
+type GlobalNumRes struct {
 	NumRes int `xml:"num_res,attr" json:"num_res"`
 }
 
 type Packet struct {
-	Threads         []Thread        `xml:"thread" json:"threads"`
-	Leaves          []Leaf          `xml:"leaf" json:"leaves"`
-	ViewCounter     ViewCounter     `xml:"view_counter" json:"view_counter"`
-	GlobalNumberRes GlobalNumberRes `xml:"global_num_res" json:"global_num_res"`
-	Comments        []Comment       `xml:"chat" json:"comments"`
+	Threads      []Thread     `xml:"thread" json:"threads"`
+	Leaves       []Leaf       `xml:"leaf" json:"leaves"`
+	ViewCounter  ViewCounter  `xml:"view_counter" json:"view_counter"`
+	GlobalNumRes GlobalNumRes `xml:"global_num_res" json:"global_num_res"`
+	Comments     []Comment    `xml:"chat" json:"comments"`
 }
 
 func ToVideoID(query string) string {
