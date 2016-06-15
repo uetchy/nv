@@ -1,7 +1,6 @@
 package niconico
 
 import (
-	"bytes"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
@@ -178,9 +177,7 @@ func GetFlv(videoID string, sessionKey string) (flv map[string]string, err error
 // threadID flv.thread_id
 // length flv.l
 func DownloadVideoComments(commentURL string, outputPath string, nicoHistory string, threadID string, length int) (err error) {
-	length = int(length / 60)
-	reqBody := `<packet><thread thread="` + threadID + `" version="20090904" scores="1" nicoru="1" with_global="1"/><thread_leaves thread="` + threadID + `" scores="1" nicoru="1">0-` + fmt.Sprint(length) + `:10</thread_leaves></packet>`
-	req, _ := http.NewRequest("POST", commentURL, bytes.NewBuffer([]byte(reqBody)))
+	req, _ := http.NewRequest("GET", commentURL+"thread?version=20090904&thread="+threadID+"&res_from=-1000", nil)
 	req.Header.Add("Cookie", nicoHistory)
 
 	client := &http.Client{}
