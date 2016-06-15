@@ -33,7 +33,7 @@ type Thumbinfo struct {
 	LastResBody   string `xml:"thumb>last_res_body"`
 	WatchURL      string `xml:"thumb>watch_url"`
 	ThumbType     string `xml:"thumb>thumb_type"`
-	Embeddable    string `xml:"thumb>embeddable"`
+	Embeddable    bool   `xml:"thumb>embeddable"`
 	NoLivePlay    int    `xml:"thumb>no_live_play"`
 	Tags          []Tag  `xml:"thumb>tags>tag"`
 	UserID        int    `xml:"thumb>user_id"`
@@ -99,9 +99,9 @@ type Packet struct {
 
 func ToVideoID(query string) string {
 	re, _ := regexp.Compile("[a-z]{2}?\\d+")
-	one := re.Find([]byte(query))
+	one := re.FindString(query)
 
-	return string(one)
+	return one
 }
 
 func GetThumbInfo(videoID string) (thumb Thumbinfo, err error) {
