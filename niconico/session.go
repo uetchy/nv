@@ -21,8 +21,7 @@ func GetSessionKey(mail string, password string) string {
 		})
 
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+		return cli.NewExitError(err, 1)
 	}
 
 	defer res.Body.Close()
