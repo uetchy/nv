@@ -11,6 +11,8 @@ var Commands = []cli.Command{
 	CommandBrowse,
 }
 
+var Version string = "HEAD"
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "nv"

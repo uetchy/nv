@@ -6,6 +6,14 @@ The commandline tool for downloading videos and mylist at nicovideo.
 
 ## Installation
 
+### Stable version
+
+```session
+curl -Ls https://gist.githubusercontent.com/uetchy/b285401a11134d6c3688945b1037cd81/raw/install.sh | bash
+```
+
+### HEAD version
+
 ```session
 $ go get -d github.com/uetchy/nv
 ```

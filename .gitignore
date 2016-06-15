@@ -1,3 +1,4 @@
 *.mp4
 *.mp4.json
 *.mp3
+/pkg
