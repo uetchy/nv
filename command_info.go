@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
+	"github.com/uetchy/nv/niconico"
 	"github.com/urfave/cli"
-	"os"
 )
 
 var CommandInfo = cli.Command{
@@ -16,44 +17,44 @@ var CommandInfo = cli.Command{
 			return cli.NewExitError("No argument specified", 1)
 		}
 
+		err := loadConfig()
+		if err != nil {
+			err = generateConfig()
+			if err != nil {
+				panic(fmt.Errorf("%s", err))
+			}
+		}
+
+		email := viper.GetString("email")
+		password := viper.GetString("password")
+		if email == "" {
+			return cli.NewExitError("Must setup 'email' first", 1)
+		}
+		if password == "" {
+			return cli.NewExitError("Must setup 'password' first", 1)
+		}
+
+		err, sessionKey := niconico.GetSessionKey(email, password)
+		if err != nil {
+			return cli.NewExitError("Failed to retrieve session key", 1)
+		}
+
 		if niconico.IsMylist(argQuery) {
 			mylistID := niconico.ToMylistID(argQuery)
 			mylist, _ := niconico.GetMylist(mylistID, sessionKey)
 			for _, video := range mylist.List {
-				getVideo(video.ID, sessionKey, withComments)
+				fmt.Println(video.Title)
+				fmt.Println(video.DescriptionShort, "\n")
 			}
 		} else {
 			videoID := niconico.ToVideoID(argQuery)
-			getVideo(videoID, sessionKey, withComments)
+			video, _ := niconico.GetThumbInfo(videoID)
+			fmt.Println(video.Title)
+			fmt.Println(video.Description)
+			fmt.Println(video.ViewCounter, "watches", video.CommentNum, "comments", video.MylistCounter, "listed")
+			fmt.Println(video.WatchURL)
 		}
-		fmt.Println(videoID)
 
 		return nil
 	},
 }
-
-// def info(ptr)
-//   config = Nv::Config.new(Nv::CONFIG_PATH)
-//   config.verify_for_authentication!('info')
-//
-//   nico = Niconico::Base.new.sign_in(config.email, config.password)
-//
-//   if mylist?(ptr)
-//     mylist = nico.mylist(ptr)
-//
-//     puts "Title : #{mylist.title}"
-//     puts "Desc  : #{mylist.description}"
-//
-//     mylist.items.each_with_index do |item, i|
-//       puts "   #{i + 1}. #{item.title}"
-//     end
-//   else
-//     video = nico.video(ptr)
-//
-//     puts video.title
-//     puts '=' * 40
-//     puts video.description
-//     puts '=' * 40
-//     puts "URL: #{video.watch_url}"
-//   end
-// end
