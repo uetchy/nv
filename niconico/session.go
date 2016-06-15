@@ -1,14 +1,12 @@
 package niconico
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
-	"os"
 )
 
-func GetSessionKey(mail string, password string) string {
+func GetSessionKey(mail string, password string) (error, string) {
 	jar, _ := cookiejar.New(nil)
 	client := &http.Client{
 		Jar: jar,
@@ -21,7 +19,7 @@ func GetSessionKey(mail string, password string) string {
 		})
 
 	if err != nil {
-		return cli.NewExitError(err, 1)
+		return err, ""
 	}
 
 	defer res.Body.Close()
@@ -29,5 +27,5 @@ func GetSessionKey(mail string, password string) string {
 	u, _ := url.Parse("http://nicovideo.jp")
 	sessionKey := jar.Cookies(u)[1].String()
 
-	return sessionKey
+	return nil, sessionKey
 }
