@@ -1,56 +1,60 @@
 # nv
 
+[![Build Status](https://travis-ci.org/uetchy/nv.svg?branch=master)](https://travis-ci.org/uetchy/nv)
+
 The commandline tool for downloading videos and mylist at nicovideo.
 
 ## Installation
 
 ```session
-$ gem install nv
+$ go get -d github.com/uetchy/nv
 ```
 
 ## Usage
 
-### Setup
+Default config file will be put on **~/.config/nv/config.yml**
+
+## Download
 
 ```session
-$ nv config email john@example.com
-$ nv config password pAsSwoRd
-```
-
-Default config file will be put on __~/.config/nv__
-
-### Download
-
-```session
-$ nv dl http://www.nicovideo.jp/watch/sm22538737
-$ nv dl http://www.nicovideo.jp/mylist/33435425
+$ nv get http://www.nicovideo.jp/watch/sm22538737
+$ nv get http://www.nicovideo.jp/mylist/33435425
 ```
 
 You also can use more shorten addresses.
 
 ```session
-$ nv dl sm9
-$ nv dl mylist/33435425
+$ nv get sm9
+$ nv get mylist/33435425
 ```
 
-#### Options
+### Options
 
-##### Directory
+#### Download comments
 
 ```session
-$ nv dl sm9 --with-dir
-$ nv dl mylist/33435425 --without-dir
+$ nv get sm9 --with-comments
 ```
 
-##### Comments
-
-```session
-$ nv dl sm9 --with-comments
-```
-
-### Audit
+## Show info
 
 ```session
 $ nv info sm9
 $ nv info mylist/33435425
 ```
+
+## Open video on nicovideo.jp
+
+```session
+$ nv browse "./Cat Movie [sm00000].mp4"
+```
+
+## Contribution
+
+1. Fork (<https://github.com/uetchy/nv/fork>)
+2. Create a feature branch
+3. Commit your changes
+4. Rebase your local changes against the master branch
+5. Run test suite with the `go test ./...` command and confirm that it passes
+6. Run `gofmt -s`
+7. Create a new Pull Request
