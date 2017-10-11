@@ -19,7 +19,7 @@ func main() {
 	app.Version = Version
 	app.Usage = "nv get [URL | NAME]"
 	app.Author = "Yasuaki Uechi"
-	app.Email = "uetchy@randompaper.co"
+	app.Email = "y@uechi.io"
 	app.Commands = Commands
 
 	app.Run(os.Args)
