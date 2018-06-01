@@ -1,7 +1,7 @@
 sudo: false
 language: go
 go:
-  - tip
+  - 1.10.2
 before_install:
   - go get -v github.com/mitchellh/gox
   - go get -v github.com/tcnksm/ghr
