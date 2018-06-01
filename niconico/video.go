@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"github.com/cheggaaa/pb"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -14,8 +13,11 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"gopkg.in/cheggaaa/pb.v1"
 )
 
+// Thumbinfo contain thumbinfo response
 type Thumbinfo struct {
 	VideoID       string `xml:"thumb>video_id"`
 	Title         string `xml:"thumb>title"`
@@ -40,11 +42,13 @@ type Thumbinfo struct {
 	UserIconURL   string `xml:"thumb>user_icon_url"`
 }
 
+// Tag stand for video tag
 type Tag struct {
 	Title    string `xml:",chardata"`
 	Category string `xml:"category,attr"`
 }
 
+// Comment describes video comment
 // <chat thread="1387572949" no="5" vpos="15095" date="1387575544" mail="184" user_id="kwpNfx7idiioqlDzTDbG49P-drU" anonymity="1" leaf="2">綺麗だな~</chat>
 type Comment struct {
 	ThreadID  int    `xml:"thread,attr" json:"thread"`
@@ -58,6 +62,7 @@ type Comment struct {
 	Body      string `xml:",chardata" json:"body"`
 }
 
+// Thread is a comments session
 // <thread resultcode="0" thread="1387572949" last_res="256" ticket="0x50cac000" revision="1" server_time="1465812057"/>
 type Thread struct {
 	ResultCode int    `xml:"resultcode,attr" json:"result_code"`
@@ -68,6 +73,7 @@ type Thread struct {
 	ServerTime int    `xml:"server_time,attr" json:"server_time"`
 }
 
+// Leaf is a chunk of comment
 // <leaf thread="1387572949" count="49"/>
 // <leaf thread="1387572949" leaf="1" count="14"/>
 type Leaf struct {
@@ -76,6 +82,7 @@ type Leaf struct {
 	Count    int `xml:"count,attr" json:"count"`
 }
 
+// ViewCounter is a view info
 // <view_counter video="32767" id="sm22495319" mylist="55"/>
 type ViewCounter struct {
 	Video  int    `xml:"video,attr" json:"video"`
@@ -83,11 +90,13 @@ type ViewCounter struct {
 	Mylist int    `xml:"mylist,attr" json:"mylist"`
 }
 
+// GlobalNumRes is a global number of response
 // <global_num_res thread="1387572949" num_res="256"/>
 type GlobalNumRes struct {
 	NumRes int `xml:"num_res,attr" json:"num_res"`
 }
 
+// Packet is a comment packet
 type Packet struct {
 	Threads      []Thread     `xml:"thread" json:"threads"`
 	Leaves       []Leaf       `xml:"leaf" json:"leaves"`
@@ -96,6 +105,7 @@ type Packet struct {
 	Comments     []Comment    `xml:"chat" json:"comments"`
 }
 
+// ToVideoID convert arbitorary query to formal video ID
 func ToVideoID(query string) string {
 	re, _ := regexp.Compile("[a-z]{2}?\\d+")
 	one := re.FindString(query)
@@ -103,6 +113,7 @@ func ToVideoID(query string) string {
 	return one
 }
 
+// GetThumbInfo returns thumbinfo
 func GetThumbInfo(videoID string) (thumb Thumbinfo, err error) {
 	target := "http://ext.nicovideo.jp/api/getthumbinfo/" + videoID
 	res, err := http.Get(target)
@@ -122,6 +133,7 @@ func GetThumbInfo(videoID string) (thumb Thumbinfo, err error) {
 	return thumb, nil
 }
 
+// GetHistory returns history cookie
 func GetHistory(videoID string, sessionKey string) (nicoHistory string, err error) {
 	target := "http://www.nicovideo.jp/watch/" + videoID
 	req, _ := http.NewRequest("GET", target, nil)
@@ -141,6 +153,7 @@ func GetHistory(videoID string, sessionKey string) (nicoHistory string, err erro
 	return tmp[1].String(), nil
 }
 
+// GetFlv returns flv info
 func GetFlv(videoID string, sessionKey string) (flv map[string]string, err error) {
 	target := "http://flapi.nicovideo.jp/api/getflv?v=" + videoID
 	req, _ := http.NewRequest("GET", target, nil)
@@ -173,6 +186,7 @@ func GetFlv(videoID string, sessionKey string) (flv map[string]string, err error
 // POST http://msg.nicovideo.jp/53/api/
 // <packet><thread thread="1345476375" version="20090904" user_id="1501297" scores="1" nicoru="1" with_global="1"/><thread_leaves thread="1345476375" user_id="1501297" scores="1" nicoru="1">0-14:100,1000</thread_leaves></packet>
 
+// DownloadVideoComments obtain comments within the video
 // commentURL flv.ms
 // threadID flv.thread_id
 // length flv.l
@@ -213,6 +227,7 @@ func DownloadVideoComments(commentURL string, outputPath string, nicoHistory str
 	return nil
 }
 
+// DownloadVideoSource from nicovideo
 func DownloadVideoSource(videoURL string, outputPath string, nicoHistory string) (err error) {
 	req, _ := http.NewRequest("GET", videoURL, nil)
 	req.Header.Add("Cookie", nicoHistory)
@@ -225,11 +240,12 @@ func DownloadVideoSource(videoURL string, outputPath string, nicoHistory string)
 	}
 
 	client := &http.Client{}
-	res, _ := client.Do(req)
+	res, err := client.Do(req)
 	defer res.Body.Close()
 	dataLength, _ := strconv.Atoi(res.Header.Get("Content-Length"))
 
-	bar := pb.New(dataLength).SetUnits(pb.U_BYTES)
+	bar := pb.New(dataLength)
+	bar.SetUnits(pb.U_BYTES)
 	bar.Start()
 
 	file, err := os.OpenFile(temporaryPath, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0644)

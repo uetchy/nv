@@ -2,12 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/Songmu/prompter"
-	"github.com/mitchellh/go-homedir"
-	"github.com/spf13/viper"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/Songmu/prompter"
+	"github.com/mitchellh/go-homedir"
+	"github.com/spf13/viper"
 )
 
 type config struct {

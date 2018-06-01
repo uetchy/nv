@@ -1,10 +1,10 @@
 package niconico
 
 import (
+	"errors"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
-	"errors"
 )
 
 func GetSessionKey(mail string, password string) (error, string) {

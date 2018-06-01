@@ -2,3 +2,5 @@
 *.mp4.json
 *.mp3
 /pkg
+
+vendor

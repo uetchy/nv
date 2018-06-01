@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/spf13/viper"
 	"github.com/uetchy/nv/niconico"
 	"github.com/urfave/cli"
@@ -44,7 +45,7 @@ var CommandInfo = cli.Command{
 			mylist, _ := niconico.GetMylist(mylistID, sessionKey)
 			for _, video := range mylist.List {
 				fmt.Println(video.Title)
-				fmt.Println(video.DescriptionShort, "\n")
+				fmt.Println(video.DescriptionShort)
 			}
 		} else {
 			videoID := niconico.ToVideoID(argQuery)

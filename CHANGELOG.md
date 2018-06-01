@@ -4,10 +4,10 @@
 
 ### Changed
 
-- Rewrote all of codes in Golang
-- Add new command: #info #browse
+* Rewrote all of codes in Golang
+* Add new command: #info #browse
 
 ## 0.1.0 (2014-08-18)
 
-- Initial release
-- Add Fundamental features
+* Initial release
+* Add Fundamental features

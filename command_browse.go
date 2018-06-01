@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/urfave/cli"
 	"os/exec"
+
+	"github.com/urfave/cli"
 )
 
 var CommandBrowse = cli.Command{

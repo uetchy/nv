@@ -3,11 +3,12 @@ package main
 import (
 	"errors"
 	"fmt"
+	"os"
+	"strconv"
+
 	"github.com/spf13/viper"
 	"github.com/uetchy/nv/niconico"
 	"github.com/urfave/cli"
-	"os"
-	"strconv"
 )
 
 var CommandGet = cli.Command{
