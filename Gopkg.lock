@@ -31,12 +31,6 @@
   revision = "ef8a98b0bbce4a65b5aa4c368430a80ddc533168"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/kami-zh/go-capturer"
-  packages = ["."]
-  revision = "e492ea43421da7381e5200a2e22753bfc31347c2"
-
-[[projects]]
   name = "github.com/magiconair/properties"
   packages = ["."]
   revision = "c2353362d570a7bfa228149c62842019201cfb71"
@@ -154,6 +148,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c552b7349322103b59727936ebfc999da1871bf84c18135d02f0662609f9b5b0"
+  inputs-digest = "182efc089fa5ccc6460d376819fc347feec6431b788349b272feaf75f6724295"
   solver-name = "gps-cdcl"
   solver-version = 1

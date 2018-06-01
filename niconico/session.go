@@ -29,6 +29,9 @@ func GetSessionKey(mail string, password string) (error, string) {
 	}
 
 	u, _ := url.Parse("http://nicovideo.jp")
+	if len(jar.Cookies(u)) < 2 {
+		return errors.New("Login failed"), ""
+	}
 	sessionKey := jar.Cookies(u)[1].String()
 
 	return nil, sessionKey
